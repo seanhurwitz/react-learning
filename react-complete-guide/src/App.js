@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import classes from './App.css';
-import Person from './Person/Person';
-
+import Persons from './Components/Persons';
+import Cockpit from './Components/Cockpit';
+import { Aux, withClass } from './hoc';
+import AuthContext from './context';
 class App extends Component {
   state = {
     persons: [
@@ -24,78 +26,95 @@ class App extends Component {
     randomChoice: Math.floor(Math.random() * 3),
     showOrHide: 'HIDE',
     buttonDisplayText: 'SHOWING',
+    authenticated: false,
   };
+
   nameChangedHandler = (event, id) => {
-    const persons = [...this.state.persons];
-    const personIndex = persons.findIndex(person => person.id === id);
-    persons[personIndex].name = event.target.value;
-    this.setState({ persons });
+    const value = event.target.value;
+    this.setState((prevState, props) => {
+      const persons = [...prevState.persons];
+      const personIndex = persons.findIndex(person => person.id === id);
+      persons[personIndex].name = value;
+      return { persons };
+    });
   };
   toggleVisibilityHandler = () => {
-    const showOrHide = this.state.showOrHide === 'HIDE' ? 'SHOW' : 'HIDE';
-    const buttonDisplayText = showOrHide;
-    this.setState({ showOrHide, buttonDisplayText });
+    this.setState((prevState, props) => {
+      if (prevState.persons.length > 0) {
+        const showOrHide = prevState.showOrHide === 'HIDE' ? 'SHOW' : 'HIDE';
+        const buttonDisplayText = showOrHide;
+        return { showOrHide, buttonDisplayText };
+      }
+    });
   };
   deletePersonHandler = index => {
-    const persons = this.state.persons.filter((p, idx) => idx !== index);
-    const buttonDisplayText =
-      persons.length === 0 ? 'NOTHING TO SHOW!' : this.state.buttonDisplayText;
-    this.setState({
-      persons,
-      buttonDisplayText,
+    this.setState((prevState, props) => {
+      const persons = prevState.persons.filter((p, idx) => idx !== index);
+      const buttonDisplayText =
+        persons.length === 0 ? 'NOTHING TO SHOW!' : prevState.buttonDisplayText;
+      return {
+        persons,
+        buttonDisplayText,
+      };
     });
   };
   buttonHoverEnter = () => {
-    const buttonDisplayText = this.state.showOrHide;
-    this.setState({ buttonDisplayText });
+    this.setState((prevState, props) => {
+      const buttonDisplayText =
+        prevState.persons.length === 0
+          ? prevState.buttonDisplayText
+          : prevState.showOrHide;
+      return { buttonDisplayText };
+    });
   };
   buttonHoverLeave = () => {
-    const buttonDisplayText =
-      this.state.showOrHide === 'HIDE' ? 'SHOWING' : 'HIDING';
-    this.setState({ buttonDisplayText });
+    this.setState((prevState, props) => {
+      const buttonDisplayText =
+        prevState.persons.length === 0
+          ? prevState.buttonDisplayText
+          : prevState.showOrHide === 'HIDE'
+          ? 'SHOWING'
+          : 'HIDING';
+      return { buttonDisplayText };
+    });
+  };
+  loginHandler = () => {
+    this.setState({ authenticated: true });
   };
   render() {
     const willHide = this.state.showOrHide === 'HIDE';
-    const btnClasses = [classes.Button];
-    btnClasses.push(willHide ? classes.Green : classes.Red);
+
     const persons = willHide && (
-      <div>
-        {this.state.persons.map((person, index) => (
-          <Person
-            key={person.id}
-            name={person.name}
-            age={person.age}
-            click={() => this.deletePersonHandler(index)}
-            changed={event => this.nameChangedHandler(event, person.id)}
-          />
-        ))}
-      </div>
+      <Persons
+        persons={this.state.persons}
+        clicked={this.deletePersonHandler}
+        changed={this.nameChangedHandler}
+        isAuthenticated={this.state.authenticated}
+      />
     );
 
-    const assignedClasses = [];
-    if (this.state.persons.length <= 2) {
-      assignedClasses.push(classes.red);
-    }
-    if (this.state.persons.length <= 1) {
-      assignedClasses.push(classes.bold);
-    }
-
     return (
-      <div className={classes.App}>
-        <h1>Hi! I'm a React App!</h1>
-        <p className={assignedClasses.join(' ')}>THIS IS WORKING!</p>
-        <button
-          className={btnClasses.join(' ')}
-          onClick={this.toggleVisibilityHandler}
-          onMouseEnter={this.buttonHoverEnter}
-          onMouseLeave={this.buttonHoverLeave}
+      <Aux>
+        <AuthContext.Provider
+          value={{
+            authenticated: this.state.authenticated,
+            login: this.loginHandler,
+          }}
         >
-          {this.state.buttonDisplayText}
-        </button>
-        {persons}
-      </div>
+          <Cockpit
+            appTitle={this.props.appTitle || "Where's my Title?"}
+            willHide={willHide}
+            personsLength={this.state.persons.length}
+            buttonDisplayText={this.state.buttonDisplayText}
+            clicked={this.toggleVisibilityHandler}
+            enter={this.buttonHoverEnter}
+            leave={this.buttonHoverLeave}
+          />
+          {persons}
+        </AuthContext.Provider>
+      </Aux>
     );
   }
 }
 
-export default App;
+export default withClass(App, classes.App);
