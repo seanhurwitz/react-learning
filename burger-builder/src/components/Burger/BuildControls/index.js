@@ -23,8 +23,13 @@ const buildControls = (props) => {
           disabled={props.disabled[control.type]}
         />
       ))}
-      <button className={classes.OrderButton}
-      disabled={Object.values(props.disabled).every(item => item)}>ORDER NOW</button>
+      <button
+        className={classes.OrderButton}
+        disabled={Object.values(props.disabled).every((item) => item)}
+        onClick={props.ordered}
+      >
+        ORDER NOW
+      </button>
     </div>
   );
 };

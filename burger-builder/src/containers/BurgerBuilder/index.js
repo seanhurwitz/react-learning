@@ -1,5 +1,5 @@
 import React, { Component, Fragment } from 'react';
-import { Burger, BuildControls } from '../../components';
+import { Burger, BuildControls, Modal, OrderSummary } from '../../components';
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
@@ -17,7 +17,13 @@ class BurgerBuilder extends Component {
       meat: 0,
     },
     totalPrice: 0,
+    purchasing: false,
   };
+
+  purchaseHandler = () => {
+    this.setState({ purchasing: true });
+  };
+
   addIngredientHandler = (type) => {
     const ingredients = {
       ...this.state.ingredients,
@@ -43,12 +49,16 @@ class BurgerBuilder extends Component {
     }
     return (
       <Fragment>
+        <Modal show={this.state.purchasing}>
+          <OrderSummary ingredients={this.state.ingredients} />
+        </Modal>
         <Burger ingredients={this.state.ingredients} />
         <BuildControls
           ingredientAdded={this.addIngredientHandler}
           ingredientRemoved={this.removeIngredientHandler}
           disabled={disabledInfo}
           price={this.state.totalPrice}
+          ordered={this.purchaseHandler}
         />
       </Fragment>
     );
