@@ -3,17 +3,17 @@ import { Burger, BuildControls, Modal, OrderSummary } from '../../components';
 
 const INGREDIENT_PRICES = {
   salad: 0.5,
-  cheese: 0.4,
+  egg: 0.4,
   meat: 1.3,
-  bacon: 0.7,
+  macon: 0.7,
 };
 
 class BurgerBuilder extends Component {
   state = {
     ingredients: {
       salad: 0,
-      bacon: 0,
-      cheese: 0,
+      macon: 0,
+      egg: 0,
       meat: 0,
     },
     totalPrice: 0,
