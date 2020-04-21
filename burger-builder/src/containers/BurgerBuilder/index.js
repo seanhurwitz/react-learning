@@ -42,7 +42,9 @@ class BurgerBuilder extends Component {
       ...this.state.ingredients,
     };
     ingredients[type]--;
-    const totalPrice = this.state.totalPrice - INGREDIENT_PRICES[type];
+    const totalPrice = Math.abs(
+      this.state.totalPrice - INGREDIENT_PRICES[type],
+    );
     this.setState({ ingredients, totalPrice });
   };
   render() {
