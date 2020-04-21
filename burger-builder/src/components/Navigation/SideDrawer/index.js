@@ -7,7 +7,11 @@ import classes from './SideDrawer.module.css';
 
 const sideDrawer = (props) => (
   <Fragment>
-    <Backdrop show={props.show} clicked={props.clicked} />
+    <div className={classes.Backdrop}>
+      {' '}
+      <Backdrop show={props.show} clicked={props.clicked} />
+    </div>
+
     <div
       className={[
         classes.SideDrawer,

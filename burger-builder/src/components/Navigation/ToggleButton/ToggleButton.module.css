@@ -1,0 +1,15 @@
+.ToggleButton {
+  height: 100%;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+
+.ToggleButton img {
+  height: 100%;
+}
+
+@media (min-width: 500px) {
+  .ToggleButton {
+    display: none;
+  }
+}

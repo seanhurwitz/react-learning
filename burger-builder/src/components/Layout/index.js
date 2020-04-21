@@ -4,7 +4,7 @@ import { Toolbar, SideDrawer } from '../Navigation';
 
 class Layout extends Component {
   state = {
-    showSideDrawer: true,
+    showSideDrawer: false,
   };
   sideDrawerToggleHandler = () => {
     const showSideDrawer = !this.state.showSideDrawer;
@@ -17,7 +17,7 @@ class Layout extends Component {
           show={this.state.showSideDrawer}
           clicked={this.sideDrawerToggleHandler}
         />
-        <Toolbar />
+        <Toolbar toggleSideDrawer={this.sideDrawerToggleHandler} />
         <main className={classes.Content}>{this.props.children}</main>
       </Fragment>
     );
