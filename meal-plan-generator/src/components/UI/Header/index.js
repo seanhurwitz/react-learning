@@ -4,7 +4,18 @@ import Radio from '../Radio';
 import classes from './Header.module.css';
 
 const header = (props) => {
-  const radioOptions = ['Daily', 'Weekly'];
+  const daysOfWeek = [
+    'Sunday',
+    'Monday',
+    'Tuesday',
+    'Wednesday',
+    'Thursday',
+    'Friday',
+    'Saturday',
+    'Sunday',
+  ];
+  const todaysDay = new Date(Date.now()).getDay();
+  const radioOptions = [`Today (${daysOfWeek[todaysDay]})`, 'Weekly'];
   return (
     <div className={classes.Header}>
       <h1>MY MEAL PLAN GENERATOR</h1>

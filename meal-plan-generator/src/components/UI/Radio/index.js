@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React from 'react';
 import classes from './Radio.module.css';
 
 const radio = (props) => (
