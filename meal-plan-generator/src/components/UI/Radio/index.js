@@ -3,7 +3,7 @@ import classes from './Radio.module.css';
 
 const radio = (props) => (
   <div className={classes.Radio}>
-    {props.options.map((option) => (
+    {props.options.map((option, idx) => (
       <div
         key={option}
         style={{
@@ -17,7 +17,8 @@ const radio = (props) => (
           id={option}
           name="choices"
           value={option}
-          defaultChecked={option === 'Daily'}
+          defaultChecked={idx === 0}
+          onChange={() => props.changePlan(option)}
         />
       </div>
     ))}
