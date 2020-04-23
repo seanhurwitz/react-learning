@@ -1,12 +1,6 @@
 import React from 'react';
 import BuildControl from './BuildControl';
 import classes from './BuildControls.module.css';
-const controls = [
-  { label: 'Salad', type: 'salad' },
-  { label: 'Macon', type: 'macon' },
-  { label: 'Egg', type: 'egg' },
-  { label: 'Meat', type: 'meat' },
-];
 
 const buildControls = (props) => {
   return (
@@ -14,22 +8,32 @@ const buildControls = (props) => {
       <p>
         CURRENT PRICE: <strong>${props.price.toFixed(2)}</strong>
       </p>
-      {controls.map((control) => (
+      {props.ingredients.map((control) => (
         <BuildControl
-          key={control.label}
-          label={control.label}
-          added={() => props.ingredientAdded(control.type)}
-          removed={() => props.ingredientRemoved(control.type)}
-          disabled={props.disabled[control.type]}
+          key={control}
+          label={control.toUpperCase()}
+          added={() => props.ingredientAdded(control)}
+          removed={() => props.ingredientRemoved(control)}
+          disabled={props.disabled[control]}
         />
       ))}
-      <button
-        className={classes.OrderButton}
-        disabled={Object.values(props.disabled).every((item) => item)}
-        onClick={props.ordered}
-      >
-        ORDER NOW
-      </button>
+      <div>
+        <button
+          className={classes.OrderButton}
+          style={{ backgroundColor: 'darkred', color: 'white' }}
+          disabled={Object.values(props.disabled).every((item) => item)}
+          onClick={props.reset}
+        >
+          RESET
+        </button>
+        <button
+          className={classes.OrderButton}
+          disabled={Object.values(props.disabled).every((item) => item)}
+          onClick={props.ordered}
+        >
+          ORDER NOW
+        </button>
+      </div>
     </div>
   );
 };

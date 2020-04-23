@@ -110,3 +110,18 @@
   background: linear-gradient(#bf3813, #c45e38);
   margin: 2% auto;
 }
+
+.Pineapple {
+  width: 65%;
+  height: 5%;
+  background: linear-gradient(#e4b312, #ffe602);
+  margin: 2% auto;
+}
+
+.Onion {
+  width: 80%;
+  height: 3%;
+  background: rgb(214, 206, 172);
+  margin: 2% auto;
+  border-radius: 10px;
+}
