@@ -1,3 +1,10 @@
+.MasterPlan {
+  display: flex;
+  justify-content: space-evenly;
+  flex-wrap: wrap;
+  align-items: center;
+  vertical-align: middle;
+}
 .Plan {
   text-transform: uppercase;
   display: flex;
@@ -5,6 +12,8 @@
   justify-content: space-between;
   text-align: center;
   margin: 5px;
+  width: 350px;
+  height: 280px;
 }
 .Plan h1 {
   display: flex;
