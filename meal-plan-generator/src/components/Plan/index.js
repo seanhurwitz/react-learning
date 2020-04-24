@@ -24,7 +24,7 @@ const plan = (props) => {
   return (
     <div className={classes.MasterPlan}>
       {plan.map((day) => (
-        <div className={classes.Plan}>
+        <div key={day.day} className={classes.Plan}>
           <h1>FOR {day.day}</h1>
           {Object.keys(day.meals).map((meal) => (
             <div key={meal}>

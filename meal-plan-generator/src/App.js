@@ -1,4 +1,5 @@
 import React, { Fragment, Component } from 'react';
+import axios from './axios-instances';
 import { Header, Modal, Plan } from './components';
 import { Body } from './containers';
 import './App.css';
@@ -45,6 +46,13 @@ class App extends Component {
     planType: 'Today',
     showPlan: false,
   };
+
+  // componentDidMount() {
+  //   axios.get('/data.json').then((res) => {
+  //     const days = Object.values(res.data)[0].days;
+  //     this.setState({ days });
+  //   });
+  // }
 
   addMealHandler = (day, meal, newMeal) => {
     const days = { ...this.state.days };
