@@ -1,32 +1,13 @@
 import React, { Component } from 'react';
-import axios from 'axios';
-
-import Post from '../../components/Post/Post';
-import FullPost from '../../components/FullPost/FullPost';
-import NewPost from '../../components/NewPost/NewPost';
+import { Route, NavLink, Switch, Redirect } from 'react-router-dom';
+import asyncComponent from '../../hoc/AsyncComponent';
 import './Blog.css';
-
+import Posts from './Posts';
+//import NewPost from './NewPost/NewPost';
+const AsyncNewPost = asyncComponent(() => import('./NewPost/NewPost'));
 class Blog extends Component {
   state = {
-    posts: [],
-    activePost: null,
-  };
-  componentDidMount() {
-    axios.get('https://jsonplaceholder.typicode.com/posts').then((response) => {
-      const posts = response.data.slice(0, 4);
-      const updatedPosts = posts.map((post) => ({ ...post, author: 'Max' }));
-      this.setState({ posts: updatedPosts });
-      console.log(response);
-    });
-  }
-  postClickedHandler = (post) => {
-    // const res = await axios.get(
-    //   `https://jsonplaceholder.typicode.com/posts/${postId}`,
-    // );
-    // const activePost = { title: res.data.title, content: res.data.body };
-    // this.setState({ activePost });
-    const activePost = { ...post };
-    this.setState({ activePost });
+    auth: true,
   };
   newPostHandler = (post) => {
     const newPost = { ...post, id: Math.ceil(Math.random() * 100000) };
@@ -34,26 +15,31 @@ class Blog extends Component {
     this.setState({ posts });
   };
   render() {
-    const posts = this.state.posts.map((post) => (
-      <Post
-        key={post.id}
-        title={post.title}
-        author={post.author}
-        clicked={() => this.postClickedHandler(post)}
-        active={this.state.activePost && this.state.activePost.id === post.id}
-      />
-    ));
     return (
       <div>
-        <section className="Posts">{posts}</section>
-        {this.state.activePost && (
-          <section>
-            <FullPost activePost={this.state.activePost} />
-          </section>
-        )}
-        <section>
-          <NewPost submitNewPost={this.newPostHandler} />
-        </section>
+        <header className="Blog">
+          <nav>
+            <ul>
+              <li>
+                <NavLink to="/posts" exact activeClassName="my-active">
+                  Posts
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/new-post" exact activeClassName="my-active">
+                  New Post
+                </NavLink>
+              </li>
+            </ul>
+          </nav>
+        </header>
+        <Switch>
+          {this.state.auth && (
+            <Route path="/new-post" component={AsyncNewPost} />
+          )}
+          <Route path="/posts" component={Posts} />
+          <Redirect from="/" to="/posts" />
+        </Switch>
       </div>
     );
   }
